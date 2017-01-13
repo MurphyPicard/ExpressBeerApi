@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 var Beer = require('./app/models/beer');
 
-mongoose.connect('mongodb://localhost/beer_api')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/beer_api');
 
 // configure app to use bodyParser()
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,7 +19,8 @@ app.use(bodyParser.json());
 
 // set up a variable to hold our model here...
 
-var port = process.env.PORT || 8080;        // set our port
+var port = process.env.PORT || 8080;
+       // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
