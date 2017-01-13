@@ -7,6 +7,14 @@
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
+var mongoose = require("mongoose");
+var Beer = require('./app/models/beer');
+
+mongoose.connect('mongodb://localhost/beer_api')
+
+// configure app to use bodyParser()
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 // set up a variable to hold our model here...
@@ -18,14 +26,14 @@ var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
 
 router.use(function(req, res, next) {
-  console.log("Something is happening");
+  console.log("Something is happening on 8080 *******///////////******?????/?");
   next();
 });
 
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-  res.json({ message: 'Welcome to the beer api!' });   
+  res.json({ message: 'Welcome to the beer api!' });
 });
 
 // more routes for our API will happen here
@@ -33,14 +41,21 @@ router.route('/beers')
 
 // create
   .post(function(req, res) {
-    // code here
+    Beer.create(req.body.beer).then( (beer) =>{
+      res.json(beer);
+    });
   })
 
 // index
   .get(function(req, res) {
-    // code here    
+    Beer.find().then((beers) =>{
+      res.json('get works');
+    });
   });
-
+  // app.get('/candidates', (req, res) => {
+  //   Candidate.find().then((candidates) => {
+  //     res.render('candidates-index', {
+  //       candidates }
 
 router.route('/beers/:beer_id')
 
